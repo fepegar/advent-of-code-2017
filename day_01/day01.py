@@ -21,7 +21,7 @@ def solve_inverse_captcha(captcha, halfway=False):
     return solution
 
 def main():
-    input_path = join(dirname(__file__), 'input.txt')
+    input_path = join(dirname(__file__), 'sequence.txt')
     with open(input_path) as f:
         text = f.read()
     captcha = text.strip()
