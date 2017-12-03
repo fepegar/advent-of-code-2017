@@ -1,3 +1,6 @@
+"""
+Solutions for day 3.
+"""
 
 def update_xy(x, y, dx, dy, new_level):
     x += dx
