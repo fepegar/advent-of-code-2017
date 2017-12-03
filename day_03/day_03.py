@@ -1,30 +1,47 @@
-import math
 
-def spiral(x):
-    if x == 1:
-        return 0
+def spiral_coords(n):
+    x, y = -1, 0
+    dx, dy = 1, 0
+    coords = {}
+    new_level = False
+    for i in range(1, n+1):
+        x += dx
+        y += dy
+        coords[i] = x, y
 
-    # x <= (2*levels - 1)**2
-    min_levels = (math.sqrt(x) + 1) / 2
-    levels = math.ceil(min_levels)
-    largest = (2*levels - 1) ** 2
+        if new_level:
+            dx = 0
+            dy = 1
+            new_level = False
+        elif x + y == 0:
+            if dx > 0:  # go right to next level
+                dx = 1
+                dy = 0
+                new_level = True
+            else:  # go down
+                dx = 0
+                dy = -1
+        elif x == y:  # left if upper right, right if bottom left
+            dx = -1 if x > 0 else 1
+            dy = 0
 
-    steps_max = 2 * (levels - 1)
-    steps_min = levels - 1
-    sequence_down = list(range(steps_max, steps_min, -1))
-    sequence_up = list(range(steps_min, steps_max))
-    sequence_level = 4 * (sequence_down + sequence_up)
-    return sequence_level[largest - x]
+    return coords
+
+
+def spiral_steps(n):
+    coords = spiral_coords(n)
+    coords_n = coords[n]
+    return abs(coords_n[0]) + abs(coords_n[1])
 
 
 def main():
     print('Part 1')
     EXAMPLES_1 = 1, 12, 23, 1024
     for example in EXAMPLES_1:
-        solution = spiral(example)
+        solution = spiral_steps(example)
         print('Solution to {}: {}'.format(example, solution))
-    solution1 = spiral(289326)
-    print(solution1)
+    solution1 = spiral_steps(289326)
+    print('Solution to part 1: {}'.format(solution1))
 
     print(2*'\n')
 
