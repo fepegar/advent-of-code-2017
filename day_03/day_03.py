@@ -23,11 +23,9 @@ def update_xy(x, y, dx, dy, new_level):
 def spiral_steps(n):
     x, y = -1, 0
     dx, dy = 1, 0
-    coords = {}
     new_level = False
-    for i in range(1, n+1):
+    for _ in range(1, n+1):
         x, y, dx, dy, new_level = update_xy(x, y, dx, dy, new_level)
-        coords[i] = x, y
     return abs(x) + abs(y)
 
 
