@@ -38,44 +38,40 @@ def spiral_stress(n):
     coords = {}
     new_level = False
 
-    s = 0
-    i = 0
-
+    i = 1
     while True:
-        i += 1
         x, y, dx, dy, new_level = update_xy(x, y, dx, dy, new_level)
-        s = 0
-        if i == 1:
-            s = 1
+        s = 1 if i == 1 else 0
         for otherX, otherY, otherS in coords.values():
-            # print(n, k, otherX, otherY, otherS)
             diffX = otherX - x
             diffY = otherY - y
             if abs(diffX) < 2 and abs(diffY) < 2:  # in range
                 s += otherS
-        coords[i] = x, y, s
         if s > n:
             return s
+        coords[i] = x, y, s
+        i += 1
 
 
 def main():
-    my_input = 289326
+    MY_INPUT = 289326
+
     print('Part 1')
     EXAMPLES_1 = 1, 12, 23, 1024
     for example in EXAMPLES_1:
         solution = spiral_steps(example)
         print('Solution to {}: {}'.format(example, solution))
-    solution1 = spiral_steps(my_input)
+    solution1 = spiral_steps(MY_INPUT)
     print('Solution to part 1: {}'.format(solution1))
 
-    print(2*'\n')
+    print()
 
     print('Part 2')
     EXAMPLES_2 = 4, 15, 23, 800
     for example in EXAMPLES_2:
         solution = spiral_stress(example)
         print('Solution to {}: {}'.format(example, solution))
-    solution2 = spiral_stress(my_input)
+    solution2 = spiral_stress(MY_INPUT)
     print('Solution to part 2: {}'.format(solution2))
 
 
