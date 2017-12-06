@@ -1,2 +1,3 @@
-main = putStrLn "Hello, World!"
-
+main = do
+    passphrases <- readFile "passphrases.txt"
+    putStrLn passphrases

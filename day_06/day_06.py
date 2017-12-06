@@ -12,7 +12,7 @@ def read_blocks(input_path):
     return blocks
 
 
-def steps_blocks(blocks):
+def steps_blocks(blocks, curiosity=False):
     seen = []
     steps = 0
     blocks = copy.deepcopy(blocks)
@@ -30,22 +30,30 @@ def steps_blocks(blocks):
             dst_index += 1
         steps += 1
         if blocks in seen:
-            return steps
+            if curiosity:
+                return steps - seen.index(blocks)
+            else:
+                return steps
 
 
 def main():
     input_path = join(dirname(__file__), 'blocks.txt')
     blocks = read_blocks(input_path)
+    EXAMPLE = [0, 2, 7, 0]
 
-    print('Part 1')
-    EXAMPLES_1 = [[0, 2, 7, 0]]
-    for example in EXAMPLES_1:
-        solution = steps_blocks(example)
-        print('Steps to leave {}: {}'.format(example, solution))
+    print('Part 2')
+    solution = steps_blocks(EXAMPLE)
+    print('Steps to leave {}: {}'.format(EXAMPLE, solution))
     solution1 = steps_blocks(blocks)
     print('Solution to part 1: {}'.format(solution1))
 
     print()
+
+    print('Part 2')
+    solution = steps_blocks(EXAMPLE, curiosity=True)
+    print('Steps to leave {}: {}'.format(EXAMPLE, solution))
+    solution2 = steps_blocks(blocks, curiosity=True)
+    print('Solution to part 2: {}'.format(solution2))
 
 
 if __name__ == '__main__':
