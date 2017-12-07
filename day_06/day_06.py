@@ -41,7 +41,7 @@ def main():
     blocks = read_blocks(input_path)
     EXAMPLE = [0, 2, 7, 0]
 
-    print('Part 2')
+    print('Part 1')
     solution = steps_blocks(EXAMPLE)
     print('Steps to leave {}: {}'.format(EXAMPLE, solution))
     solution1 = steps_blocks(blocks)
