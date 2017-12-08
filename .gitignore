@@ -1,3 +1,16 @@
+### BINARIES ###
+
+# Ignore all
+*
+
+# Unignore all with extensions
+!*.*
+
+# Unignore all dirs
+!*/
+
+
+
 ### PYTHON ###
 
 # Byte-compiled / optimized / DLL files
