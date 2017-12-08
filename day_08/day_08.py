@@ -1,4 +1,9 @@
+"""
+Solutions for day 8.
+"""
+
 import csv
+import sys
 import operator
 from os.path import dirname, join
 
@@ -16,7 +21,7 @@ def read_instructions(input_path):
     return instructions, registers
 
 
-def get_largest_after_run(instructions, registers):
+def get_largest_after_run(instructions, registers, track=False):
     operators = {
         '<': operator.lt,
         '<=': operator.le,
@@ -25,6 +30,9 @@ def get_largest_after_run(instructions, registers):
         '>=': operator.ge,
         '>': operator.gt,
     }
+
+    if track:
+        max_register_total = sys.float_info.min
 
     for instruction in instructions:
         a = registers[instruction['a']]
@@ -36,7 +44,15 @@ def get_largest_after_run(instructions, registers):
                 registers[instruction['name']] += int(instruction['n'])
             elif instruction['operation'] == 'dec':
                 registers[instruction['name']] -= int(instruction['n'])
-    return max(registers.values())
+        max_register_now = max(registers.values())
+
+        if track:
+            max_register_total = max(max_register_total, max_register_now)
+
+    if track:
+        return max_register_total
+    else:
+        return max(registers.values())
 
 
 def main():
@@ -48,6 +64,14 @@ def main():
     print('Largest registry: {}'.format(largest))
     solution1 = get_largest_after_run(*read_instructions(input_path))
     print('Solution to part 1: {}'.format(solution1))
+
+    print()
+
+    print('Part 2')
+    largest = get_largest_after_run(*read_instructions(example_path), track=True)
+    print('Largest registry: {}'.format(largest))
+    solution2 = get_largest_after_run(*read_instructions(input_path), track=True)
+    print('Solution to part 2: {}'.format(solution2))
 
 if __name__ == '__main__':
     main()
