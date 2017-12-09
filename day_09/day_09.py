@@ -11,8 +11,9 @@ CLOSE_GARBAGE = '>'
 IGNORE = '!'
 
 
-def stream_score(stream):
+def stream_score(stream, remove_garbage=False):
     score = 0
+    removed = 0
     i = 0
     group_depth = 0
     garbage = False
@@ -23,6 +24,8 @@ def stream_score(stream):
         elif garbage:
             if char == CLOSE_GARBAGE:
                 garbage = False
+            else:
+                removed += 1
         elif char == OPEN_GROUP:
             group_depth += 1
         elif char == CLOSE_GROUP:
@@ -31,26 +34,33 @@ def stream_score(stream):
         elif char == OPEN_GARBAGE:
             garbage = True
         i += 1
+
         if i >= len(stream):
-            return score
+            return removed if remove_garbage else score
 
 
 def main():
-    example_path = join(dirname(__file__), 'examples.txt')
     input_path = join(dirname(__file__), 'input.txt')
-    with open(example_path) as f:
-        examples = [line.strip() for line in f]
     with open(input_path) as f:
         stream = f.read()
 
     print('Part 1')
-    for example in examples:
-        score = stream_score(example)
-        print('{}: {}'.format(example, score))
+    with open(join(dirname(__file__), 'examples1.txt')) as f:
+        for example in [line.strip() for line in f]:
+            score = stream_score(example)
+            print('{}: {}'.format(example, score))
     solution1 = stream_score(stream)
     print('Solution to part 1: {}'.format(solution1))
 
     print()
+
+    print('Part 2')
+    with open(join(dirname(__file__), 'examples2.txt')) as f:
+        for example in [line.strip() for line in f]:
+            removed = stream_score(example, remove_garbage=True)
+            print('{}: {}'.format(example, removed))
+    solution2 = stream_score(stream, remove_garbage=True)
+    print('Solution to part 2: {}'.format(solution2))
 
 
 if __name__ == '__main__':
