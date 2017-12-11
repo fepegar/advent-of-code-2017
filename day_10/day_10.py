@@ -29,9 +29,7 @@ def tie_knot(lengths, numbers, current_position=None, skip_size=None):
         numbers = deque(rotated)
         numbers.rotate(group_first)
         numbers = list(numbers)
-        current_position += length + skip_size
-        if current_position > n:
-            current_position -= n
+        current_position += (length + skip_size) % n
         skip_size += 1
     return numbers, current_position, skip_size
 
