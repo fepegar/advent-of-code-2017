@@ -2,61 +2,58 @@
 Solutions for day 12.
 """
 
+import copy
 from os.path import dirname, join
+
+
+class Program:
+
+    def __init__(self, name):
+        self.name = name
+        self.links = []
+        self.visited = False
+
+    def __repr__(self):
+        return str(self.name)
 
 
 def read_pipes(input_path):
     with open(input_path) as f:
         lines = f.read().splitlines()
-    pipes = {}
+    programs = [Program(n) for n in range(len(lines))]
     for line in lines:
         this, others = line.split('<->')
-        this = int(this)
-        pipes[this] = []
+        this = programs[int(this)]
         for other in others.split(','):
-            pipes[this].append(int(other))
-    return pipes
+            this.links.append(programs[int(other)])
+    return programs
 
 
-def is_connected(pipes, program, group, stack=None):
-    if stack is None:
-        stack = []
-    stack.append(program)
-    for connection in pipes[program]:
-        if connection in group:
-            return True
-        elif connection in stack:
-            continue
-        else:
-            connected = is_connected(pipes, connection, group, stack)
-            if connected:
-                return True
-    return False
+def dfs(program, group):
+    program.visited = True
+    group.append(program)
+    for neighbor in program.links:
+        if not neighbor.visited:
+            dfs(neighbor, group)
 
 
-def programs_in_group(pipes, group_number=0):
-    group = []
+def connected_components(pipes):
+    groups = []
+    pipes = copy.deepcopy(pipes)
     for program in pipes:
-        if program == group_number:
-            group.append(program)
-        elif is_connected(pipes, program, group):
-            group.append(program)
-    return len(group)
+        if not program.visited:
+            group = []
+            groups.append(group)
+            dfs(program, group)
+    return groups
 
 
-def number_of_groups(pipes):
-    programs_without_group = list(pipes.keys())
-    groups = {}
-    while programs_without_group:
-        group_number = programs_without_group[0]
-        group = []
-        for program in pipes:
-            if program == group_number or is_connected(pipes, program, group):
-                group.append(program)
-        for program in group:
-            programs_without_group.pop(programs_without_group.index(program))
-        groups[group_number] = group
-    return len(groups)
+def get_number_of_components(pipes, group_number):
+    return len(connected_components(pipes)[group_number])
+
+
+def get_number_of_connected_components(pipes):
+    return len(connected_components(pipes))
 
 
 def main():
@@ -64,17 +61,17 @@ def main():
     example1 = read_pipes(join(dirname(__file__), 'example1.txt'))
 
     print('Part 1')
-    programs = programs_in_group(example1)
+    programs = get_number_of_components(example1, 0)
     print('Solution to example: {}'.format(programs))
-    solution1 = programs_in_group(pipes)
+    solution1 = get_number_of_components(pipes, 0)
     print('Solution to part 1: {}'.format(solution1))
 
     print()
 
     print('Part 2')
-    programs = number_of_groups(example1)
+    programs = get_number_of_connected_components(example1)
     print('Solution to example: {}'.format(programs))
-    solution2 = number_of_groups(pipes)
+    solution2 = get_number_of_connected_components(pipes)
     print('Solution to part 2: {}'.format(solution2))
 
 
