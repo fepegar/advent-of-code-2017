@@ -22,12 +22,19 @@ def add(coordsA, coordsB):
     return [a + b for a, b in zip(coordsA, coordsB)]
 
 
-def steps_to_return(line):
+def steps_to_return(line, far=False):
     steps = line.split(',')
     coordinates = [0, 0, 0]
+    furthest = 0
     for step in steps:
         coordinates = add(coordinates, DIRECTIONS[step])
-    return max(map(abs, coordinates))
+        distance = max(map(abs, coordinates))
+        if far:
+            furthest = max(distance, furthest)
+    if far:
+        return furthest
+    else:
+        return distance
 
 
 def main():
@@ -41,6 +48,11 @@ def main():
         print('Solution to {}: {}'.format(example, steps))
     solution1 = steps_to_return(input_steps)
     print('Solution to part 1: {}'.format(solution1))
+
+    print()
+
+    solution2 = steps_to_return(input_steps, far=True)
+    print('Solution to part 2: {}'.format(solution2))
 
 
 if __name__ == '__main__':
