@@ -51,6 +51,7 @@ def main():
 
     print()
 
+    print('Part 2')
     solution2 = steps_to_return(input_steps, far=True)
     print('Solution to part 2: {}'.format(solution2))
 
