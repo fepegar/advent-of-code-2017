@@ -44,6 +44,21 @@ def programs_in_group(pipes, group_number=0):
     return len(group)
 
 
+def number_of_groups(pipes):
+    programs_without_group = list(pipes.keys())
+    groups = {}
+    while programs_without_group:
+        group_number = programs_without_group[0]
+        group = []
+        for program in pipes:
+            if program == group_number or is_connected(pipes, program, group):
+                group.append(program)
+        for program in group:
+            programs_without_group.pop(programs_without_group.index(program))
+        groups[group_number] = group
+    return len(groups)
+
+
 def main():
     pipes = read_pipes(join(dirname(__file__), 'input.txt'))
     example1 = read_pipes(join(dirname(__file__), 'example1.txt'))
@@ -53,6 +68,14 @@ def main():
     print('Solution to example: {}'.format(programs))
     solution1 = programs_in_group(pipes)
     print('Solution to part 1: {}'.format(solution1))
+
+    print()
+
+    print('Part 2')
+    programs = number_of_groups(example1)
+    print('Solution to example: {}'.format(programs))
+    solution2 = number_of_groups(pipes)
+    print('Solution to part 2: {}'.format(solution2))
 
 
 if __name__ == '__main__':
