@@ -3,7 +3,6 @@ Solutions for day 13.
 """
 
 import re
-import copy
 from os.path import dirname, join
 
 
@@ -42,34 +41,25 @@ class Layer:
         self.direction = self.DOWN
 
 
+def read_firewall(input_path):
+    layers = []
+    pattern = r'(\d+): (\d+)'
+    with open(input_path) as f:
+        for line in f:
+            groups = re.match(pattern, line).groups()
+            layer_depth, layer_range = list(map(int, groups))
+            for depth in range(len(layers), layer_depth):
+                layers.append(Layer(depth, 0))
+            layers.append(Layer(layer_depth, layer_range))
+    return layers
+
+
 
 class Firewall:
 
     def __init__(self, input_path):
-        self.layers = self.read_firewall(input_path)
-        self.depth = -1
-
-
-    # def __repr__(self):
-    #     lines = []
-    #     line1 = ' '.join(' {} '.format(layer.depth) for layer in self.layers)
-    #     lines.append(line1)
-    #
-    #     line2 = ' '.join('[{}]'.format(layer))
-    #     return '\n'.join(lines)
-
-
-    def read_firewall(self, input_path):
-        layers = []
-        pattern = r'(\d+): (\d+)'
-        with open(input_path) as f:
-            for line in f:
-                groups = re.match(pattern, line).groups()
-                layer_depth, layer_range = list(map(int, groups))
-                for depth in range(len(layers), layer_depth):
-                    layers.append(Layer(depth, 0))
-                layers.append(Layer(layer_depth, layer_range))
-        return layers
+        self.layers = read_firewall(input_path)
+        self.packet = -1
 
 
     def update(self):
@@ -78,14 +68,13 @@ class Firewall:
 
 
     def run(self):
-        firewall = copy.copy(self)
         severity = 0
         for _ in range(len(self.layers)):
-            self.depth += 1
-            current_layer = self.layers[self.depth]
+            self.packet += 1
+            current_layer = self.layers[self.packet]
             caught = current_layer.scanner == 0
             if caught:
-                severity += current_layer.depth * current_layer.range
+                severity += current_layer.packet * current_layer.range
             for layer in self.layers:
                 layer.update()
         self.reset()
@@ -93,7 +82,7 @@ class Firewall:
 
 
     def reset(self):
-        self.depth = -1
+        self.packet = -1
         for layer in self.layers:
             layer.reset()
 
