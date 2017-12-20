@@ -2,9 +2,9 @@
 Solutions for day 14.
 """
 
+import os
 from functools import reduce
 from collections import deque
-from os.path import dirname, join
 
 
 def tie_knot(lengths, numbers, current_position=None, skip_size=None):
@@ -84,15 +84,125 @@ def get_num_squares(grid):
     return ''.join(grid).count('1')
 
 
+def ind2sub(grid, index):
+    size = len(grid)
+    i = index // size
+    j = index % size
+    return i, j
+
+
+def sub2ind(grid, i, j):
+    size = len(grid)
+    index = i * size + j
+    return index
+
+
+def get_neighbors(grid, i, j):
+    size = len(grid)
+    diffs = [
+        (-1, 0),
+        (1, 0),
+        (0, 0),
+        (0, -1),
+        (0, 1),
+    ]
+    neighbors = []
+    for di, dj in diffs:
+        ti, tj = i + di, j + dj
+        if ti >= size or ti < 0 or tj >= size or tj < 0:
+            continue
+        if grid[ti][tj] == '1':
+            neighbors.append(sub2ind(grid, ti, tj))
+    return neighbors
+
+
+def make_pipes_file(grid, output_path):
+    rows = cols = len(grid)
+    with open(output_path, 'w') as f:
+        for i in range(rows):
+            for j in range(cols):
+                if grid[i][j] == '0':
+                    continue
+                string = '{} <-> '.format(sub2ind(grid, i, j))
+                neighbors = get_neighbors(grid, i, j)
+                neighbors_string = ', '.join(map(str, neighbors))
+                print(string + neighbors_string, file=f)
+
+
+### From day 12 ###
+import copy
+
+class Program:
+    def __init__(self, name):
+        self.name = name
+        self.links = []
+        self.visited = False
+
+    def __repr__(self):
+        return str(self.name)
+
+
+def dfs(program, group):
+    program.visited = True
+    group.append(program)
+    for neighbor in program.links:
+        if not neighbor.visited:
+            dfs(neighbor, group)
+
+
+def connected_components(pipes):
+    groups = []
+    pipes = copy.deepcopy(pipes)
+    for program in pipes:
+        if not program.visited:
+            group = []
+            groups.append(group)
+            dfs(program, group)
+    return groups
+
+
+def get_number_of_connected_components(pipes):
+    return len(connected_components(pipes))
+###
+
+def read_pipes(input_path):
+    with open(input_path) as f:
+        lines = f.read().splitlines()
+    programs_map = {}
+    for line in lines:
+        this, others = line.split('<->')
+        programs_map[int(this)] = Program(this)
+    for line in lines:
+        this, others = line.split('<->')
+        this = programs_map[int(this)]
+        for other in others.split(','):
+            this.links.append(programs_map[int(other)])
+    return list(programs_map.values())
+
+
+def get_grid_number_of_cc(grid):
+    output_path = 'grid.txt'
+    make_pipes_file(grid, output_path)
+    pipes = read_pipes(output_path)
+    n = get_number_of_connected_components(pipes)
+    os.remove(output_path)
+    return n
+
+
 def main():
     INPUT = 'ugkiagan'
     EXAMPLE_1 = 'flqrgnkx'
 
     print('Part 1')
-    grid = get_grid(EXAMPLE_1)
-    print('Solution to {}: {}'.format(EXAMPLE_1, get_num_squares(grid)))
+    example = get_grid(EXAMPLE_1)
+    print('Solution to {}: {}'.format(EXAMPLE_1, get_num_squares(example)))
     grid = get_grid(INPUT)
     print('Solution to part 1: {}'.format(get_num_squares(grid)))
+
+    print()
+    print('Part 2')
+    print('Solution to {}: {}'.format(EXAMPLE_1, get_grid_number_of_cc(example)))
+    print('Solution to part 2: {}'.format(get_grid_number_of_cc(grid)))
 
 
 if __name__ == '__main__':
