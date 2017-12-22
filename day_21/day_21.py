@@ -68,6 +68,7 @@ class Image:
             rule_grid = self.str2grid(rule)
             if self.match(chunk, rule_grid):
                 return self.str2grid(self.rules[rule])
+        print("This shouldn't happen :(")
 
 
     def match(self, grid1, grid2):
@@ -96,7 +97,8 @@ class Image:
 
 
     def run(self, iterations=1):
-        for _ in range(iterations):
+        for n in range(iterations):
+            print('Runing iteration', n+1, 'size', self.size)
             self.iterate()
 
 
@@ -111,6 +113,12 @@ def main():
     print('Solution to example: {}'.format(example.on_after(2)))
     image = Image(join(dirname(__file__), 'artist_book.txt'))
     print('Solution to part 1: {}'.format(image.on_after(5)))
+
+    print()
+
+    print('Part 2')
+    image = Image(join(dirname(__file__), 'artist_book.txt'))
+    print('Solution to part 2:', image.on_after(18))
 
 
 if __name__ == '__main__':
