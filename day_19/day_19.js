@@ -1,5 +1,5 @@
 /*
- * Solutions for day 18.
+ * Solutions for day 19.
  */
 
 var diagram;
