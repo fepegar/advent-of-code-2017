@@ -7,8 +7,7 @@ var grid = [];
 
 function setup() {
   createCanvas(windowHeight, windowHeight);
-  // diagram = new Diagram(inputDiagram);
-  diagram = new Diagram(example);
+  diagram = new Diagram(inputDiagram);
   diagram.findFirst();
   background(30);
   diagram.drawGrid();
