@@ -2,10 +2,14 @@
 Solutions for day 22.
 """
 
+import sys
 from os.path import dirname, join
 
-INFECTED = True
-CLEAN = False
+CLEAN = '.'
+INFECTED = '#'
+FLAGGED = 'F'
+WEAKENED = 'W'
+
 UP = complex(-1, 0)
 TURN_RIGHT = -1j
 TURN_LEFT = 1j
@@ -13,9 +17,42 @@ TURN_LEFT = 1j
 
 class Cluster:
     def __init__(self, grid_path):
-        self.grid, self.position = self.read_grid(grid_path)
+        self.grid = {}
+        # for i in range(-10, 10):
+        #     for j in range(-10, 10):
+        #         self.grid[(i, j)] = CLEAN
+        self.position = self.read_grid(grid_path)
         self.direction = UP
         self.infections = 0
+
+
+    def __repr__(self):
+        s = ''
+        imax = jmax = sys.float_info.min
+        imin = jmin = sys.float_info.max
+        for i, j in self.grid:
+            imax = max(imax, i)
+            jmax = max(jmax, j)
+            imin = min(imin, i)
+            jmin = min(jmin, i)
+
+        for i in range(imin, imax + 1):
+            for j in range(jmin, jmax + 1):
+                position = i, j
+                if position in self.grid:
+                    value = self.grid[position]
+                else:
+                    value = CLEAN
+
+                if self.position == (i, j+1):
+                    suffix = '['
+                elif self.position == (i, j):
+                    suffix = ']'
+                else:
+                    suffix = ' '
+                s += value + suffix
+            s += '\n'
+        return s
 
 
     @property
@@ -29,15 +66,14 @@ class Cluster:
 
 
     def read_grid(self, grid_path):
-        grid = {}
         with open(grid_path) as f:
-            lines = f.readlines()
+            lines = [line.strip() for line in f.readlines()]
         for i, line in enumerate(lines):
             for j, char in enumerate(line):
-                grid[(i, j)] = char == '#'
+                self.grid[(i, j)] = char
         center = int((len(lines) - 1) / 2)
         position = center, center
-        return grid, position
+        return position
 
 
     def turn(self, turn_direction):
