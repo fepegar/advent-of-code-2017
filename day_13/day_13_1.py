@@ -149,12 +149,13 @@ def main():
     firewall = Firewall(join(dirname(__file__), 'input.txt'))
 
     print('Part 1')
-    # print('Solution to example: {}'.format(example.run()[1]))
-    # print('Solution to part 1: {}'.format(firewall.run()[1]))
+    print('Solution to example: {}'.format(example.run()[1]))
+    print('Solution to part 1: {}'.format(firewall.run()[1]))
 
-    print('Part 2')
-    print('Solution to example: {}'.format(example.get_min_delay()))
-    print('Solution to part 2: {}'.format(firewall.get_min_delay()))
+    ## Brute force is not possible
+    # print('Part 2')
+    # print('Solution to example: {}'.format(example.get_min_delay()))
+    # print('Solution to part 2: {}'.format(firewall.get_min_delay()))
 
 
 if __name__ == '__main__':
