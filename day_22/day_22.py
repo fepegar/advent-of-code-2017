@@ -13,14 +13,13 @@ WEAKENED = 'W'
 UP = complex(-1, 0)
 TURN_RIGHT = -1j
 TURN_LEFT = 1j
+TURN_REVERSE = -1
+TURN_NOTHING = 1
 
 
 class Cluster:
     def __init__(self, grid_path):
         self.grid = {}
-        # for i in range(-10, 10):
-        #     for j in range(-10, 10):
-        #         self.grid[(i, j)] = CLEAN
         self.position = self.read_grid(grid_path)
         self.direction = UP
         self.infections = 0
@@ -81,15 +80,38 @@ class Cluster:
 
 
     def burst(self):
-        if self.current_node is INFECTED:
+        if self.current_node == INFECTED:
             self.turn(TURN_RIGHT)
         else:
             self.turn(TURN_LEFT)
 
-        if self.current_node is CLEAN:
+        if self.current_node == CLEAN:
             self.current_node = INFECTED
             self.infections += 1
         else:
+            self.current_node = CLEAN
+        self.move()
+
+
+    def evolve(self):
+        state = self.current_node
+        if state == CLEAN:
+            self.turn(TURN_LEFT)
+        elif state == WEAKENED:
+            self.turn(TURN_NOTHING)
+        elif state == INFECTED:
+            self.turn(TURN_RIGHT)
+        elif state == FLAGGED:
+            self.turn(TURN_REVERSE)
+
+        if self.current_node is CLEAN:
+            self.current_node = WEAKENED
+        elif self.current_node is WEAKENED:
+            self.current_node = INFECTED
+            self.infections += 1
+        elif self.current_node is INFECTED:
+            self.current_node = FLAGGED
+        elif self.current_node is FLAGGED:
             self.current_node = CLEAN
         self.move()
 
@@ -104,9 +126,12 @@ class Cluster:
         self.position = position
 
 
-    def run(self, iterations):
+    def run(self, iterations, evolve=False):
         for _ in range(iterations):
-            self.burst()
+            if evolve:
+                self.evolve()
+            else:
+                self.burst()
         return self.infections
 
 
@@ -116,6 +141,14 @@ def main():
     print('Solution to example:', example.run(10000))
     cluster = Cluster(join(dirname(__file__), 'grid.txt'))
     print('Solution to part 1:', cluster.run(10000))
+
+    print()
+
+    print('Part 1')
+    example = Cluster(join(dirname(__file__), 'example.txt'))
+    print('Solution to example:', example.run(100, evolve=True))
+    cluster = Cluster(join(dirname(__file__), 'grid.txt'))
+    print('Solution to part 2:', cluster.run(10000000, evolve=True))
 
 
 if __name__ == '__main__':
