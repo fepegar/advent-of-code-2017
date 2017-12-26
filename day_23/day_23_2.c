@@ -12,9 +12,11 @@ int main() {
   end = 123700;
 
   for (int n = ini; n < end; n += 17) {
+    printf("%d\n", n);
     if (!isPrime(n)) {
       notPrimes++;
     }
+    printf("\n");
   }
 
   printf("h: %d\n", notPrimes);
@@ -24,9 +26,11 @@ int main() {
 
 bool isPrime(int n) {
   bool prime = true;
+  
   for (int i = 2; i < n; i++) {
-    for (int j = 2; j < n; j++) {
+    for (int j = i; j < n; j++) {
       if ((i * j) == n) {
+        printf("%d * %d == %d\n", i, j, n);
         prime = false;
         i = j = n;  // break both loops
       }
