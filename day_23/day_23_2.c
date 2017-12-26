@@ -4,13 +4,11 @@
 bool isPrime(int n);
 
 int main() {
-  int a = 1;
   int b, c;
   bool prime;
   int h = 0;
 
   b = 67;  // 1 set b 67
-  c = b;  // 2 set c b
   b *= 100;  // 5 mul b 100
   b += 100000;  // 6 sub b -100000
   c = b;  // 7 set c b
