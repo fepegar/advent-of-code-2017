@@ -25,16 +25,10 @@ int main() {
 
 
 bool isPrime(int n) {
-  bool prime = true;
-  
-  for (int i = 2; i < n; i++) {
-    for (int j = i; j < n; j++) {
-      if ((i * j) == n) {
-        printf("%d * %d == %d\n", i, j, n);
-        prime = false;
-        i = j = n;  // break both loops
-      }
+  for(int i = 2; i < n; i++) {
+    if (n % i == 0) {
+      return false;
     }
   }
-  return prime;
+  return true;
 }
