@@ -4,26 +4,20 @@
 bool isPrime(int n);
 
 int main() {
-  int b, c;
+  int ini, end;
   bool prime;
   int h = 0;
 
-  b = 67;  // 1 set b 67
-  b *= 100;  // 5 mul b 100
-  b += 100000;  // 6 sub b -100000
-  c = b;  // 7 set c b
-  c += 17000;  // 8 sub c -17000
+  ini = 67;  // 1 set b 67
+  ini *= 100;  // 5 mul b 100
+  ini += 100000;  // 6 sub b -100000
+  end = ini;  // 7 set c b
+  end += 17000;  // 8 sub c -17000
 
-  while (1) {
-    if (!isPrime(b)) {  // 25 jnz f 2
-      h += 1;  // 26 sub h -1
+  for (int n = ini; n < end; n += 17) {
+    if (!isPrime(n)) {
+      h++;  // 26 sub h -1
     }
-
-    if (b == c) {
-      break;  // 30 jnz 1 3
-    }
-
-    b += 17;  // 31 sub b -17
   }
 
   printf("h: %d\n", h);
