@@ -3,7 +3,8 @@
 
 int main() {
   int a = 1;
-  int b, c, i, j, prime;
+  int b, c, i, j;
+  bool prime;
   int h = 0;
 
   b = 67;  // 1 set b 67
