@@ -2,7 +2,7 @@
 
 int main() {
   int a = 1;
-  int b, c, i, j, f;
+  int b, c, i, j, prime;
   int h = 0;
 
   b = 67;  // 1 set b 67
@@ -13,17 +13,17 @@ int main() {
   c += 17000;  // 8 sub c -17000
 
   while (1) {
-    f = 1;  // 9 set f 1
+    prime = 1;  // 9 set f 1
 
     for (int i = 2; i < b; i++) {
       for (int j = 2; j < b; j++) {
         if ((i * j) == b) {
-          f = 0;  // 16 set f 0
+          prime = 0;  // 16 set f 0
         }
       }
     }
 
-    if (f == 0) {  // 25 jnz f 2
+    if (!prime) {  // 25 jnz f 2
       h += 1;  // 26 sub h -1
     }
 
