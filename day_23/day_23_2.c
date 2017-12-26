@@ -2,7 +2,7 @@
 
 int main() {
   int a = 1;
-  int b, c, d, e, f, g;
+  int b, c, d, e, f;
   int h = 0;
 
   b = 67;  // 1 set b 67
@@ -15,26 +15,20 @@ int main() {
   do {
     f = 1;  // 9 set f 1
     d = 2;  // 10 set d 2
-
     do {
       e = 2;  // 11 set e 2
       do {
-        g = d * e;  // 13 set g e
-        g = g - b;  // 14 sub g b
-        if (g == 0) {  // 15 jnz g 2
+        if ((d * e) == b) {
           f = 0;  // 16 set f 0
         }
         e += 1;  // 17 sub e -1
-        g = e - b;  // 19 sub g b
-      } while(g != 0);  // 20 jnz g -8
+      } while(e != b);
       d += 1;  // 21 sub d -1
-      g = d - b;  // 23 sub g b
-    } while(g != 0);  // 24 jnz g -13
+    } while(d != b);
     if (f == 0) {  // 25 jnz f 2
       h += 1;  // 26 sub h -1
     }
-    g = b - c;  // 28 sub g c
-    if (g == 0) {  // 29 jnz g 2
+    if (b == c) {
       break;  // 30 jnz 1 3
     }
     b += 17;  // 31 sub b -17
