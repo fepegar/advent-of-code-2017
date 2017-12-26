@@ -6,21 +6,18 @@ bool isPrime(int n);
 int main() {
   int ini, end;
   bool prime;
-  int h = 0;
+  int notPrimes = 0;
 
-  ini = 67;  // 1 set b 67
-  ini *= 100;  // 5 mul b 100
-  ini += 100000;  // 6 sub b -100000
-  end = ini;  // 7 set c b
-  end += 17000;  // 8 sub c -17000
+  ini = 106700;
+  end = 123700;
 
   for (int n = ini; n < end; n += 17) {
     if (!isPrime(n)) {
-      h++;  // 26 sub h -1
+      notPrimes++;  // 26 sub h -1
     }
   }
 
-  printf("h: %d\n", h);
+  printf("h: %d\n", notPrimes);
   return 0;
 }
 
