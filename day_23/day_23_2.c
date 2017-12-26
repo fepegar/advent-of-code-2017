@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 int main() {
   int a = 1;
@@ -13,12 +14,12 @@ int main() {
   c += 17000;  // 8 sub c -17000
 
   while (1) {
-    prime = 1;  // 9 set f 1
+    prime = true;  // 9 set f 1
 
     for (int i = 2; i < b; i++) {
       for (int j = 2; j < b; j++) {
         if ((i * j) == b) {
-          prime = 0;  // 16 set f 0
+          prime = false;  // 16 set f 0
         }
       }
     }
