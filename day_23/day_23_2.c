@@ -11,7 +11,7 @@ int main() {
   ini = 106700;
   end = 123700;
 
-  for (int n = ini; n < end; n += 17) {
+  for (int n = ini; n <= end; n += 17) {
     if (!isPrime(n)) {
       notPrimes++;
     }
