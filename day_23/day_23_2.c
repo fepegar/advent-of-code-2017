@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+bool isPrime(int n);
+
 int main() {
   int a = 1;
-  int b, c, i, j;
+  int b, c;
   bool prime;
   int h = 0;
 
@@ -15,17 +17,7 @@ int main() {
   c += 17000;  // 8 sub c -17000
 
   while (1) {
-    prime = true;  // 9 set f 1
-
-    for (int i = 2; i < b; i++) {
-      for (int j = 2; j < b; j++) {
-        if ((i * j) == b) {
-          prime = false;  // 16 set f 0
-        }
-      }
-    }
-
-    if (!prime) {  // 25 jnz f 2
+    if (!isPrime(b)) {  // 25 jnz f 2
       h += 1;  // 26 sub h -1
     }
 
@@ -38,4 +30,17 @@ int main() {
 
   printf("h: %d\n", h);
   return 0;
+}
+
+
+bool isPrime(int n) {
+  bool prime = true;
+  for (int i = 2; i < n; i++) {
+    for (int j = 2; j < n; j++) {
+      if ((i * j) == n) {
+        prime = false;
+      }
+    }
+  }
+  return prime;
 }
