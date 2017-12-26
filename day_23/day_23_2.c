@@ -13,7 +13,7 @@ int main() {
 
   for (int n = ini; n < end; n += 17) {
     if (!isPrime(n)) {
-      notPrimes++;  // 26 sub h -1
+      notPrimes++;
     }
   }
 
@@ -28,6 +28,7 @@ bool isPrime(int n) {
     for (int j = 2; j < n; j++) {
       if ((i * j) == n) {
         prime = false;
+        i = j = n;  // break both loops
       }
     }
   }
